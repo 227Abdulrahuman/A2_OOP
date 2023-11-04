@@ -1,3 +1,10 @@
+//File: A2_S5_20221099_12.cpp
+//purpose: Checking for phishing emails.
+//Author: Abdulrahman Mohammed
+//Section: S5
+//ID: 20221099
+//TA: Eng/Maya
+//Date: 4 Nov 2023
 #include <bits/stdc++.h>
 
 using namespace std;
