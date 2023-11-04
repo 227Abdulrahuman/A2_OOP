@@ -1,3 +1,10 @@
+//File: A2_S5_20221099_10.cpp
+//purpose: to filter a file from a spacific words
+//Author: Remon raafat nassif
+//Section: S5
+//ID: 20220139
+//TA: Eng/Maya
+//Date: 11 nov 2023
 #include <iostream>
 #include <fstream>
 #include <string>
