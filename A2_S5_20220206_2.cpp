@@ -18,7 +18,7 @@ int main() {
     getline(cin, s);
 
     for (int i = 2; i < s.size(); i++) {
-        if ((s[i - 2] == 'h' || s[i - 2] == 'H') && s[i - 1] == 'e' && !isalpha(s[i])) {
+        if ((s[i - 2] == 'h' || s[i - 2] == 'H') && s[i - 1] == 'e' && !isalpha(s[i]) && !isalpha(s[i - 3])) {
             s.replace(i - 2, 2, (s[i - 2] == 'h') ? "he or she" : "He or She");
             i += 9;
         }
