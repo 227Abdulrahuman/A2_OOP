@@ -1,167 +1,103 @@
- #include<iostream>
+//File: A2_S5_20220139_7.cpp
+//purpose: arrange domino
+//Author: Remon raafat nassif
+//Section: S5
+//ID: 20220139
+//TA: Eng/Maya
+//Date: 27 Oct 2023
+#include<iostream>
 #include<vector>
+
 using namespace std;
 
-struct dominoT {
-	int leftDots = 0;
-	int rightDots = 0;
-	void setleftdots(int l)
-	{
-		leftDots = l;
-	}
-	void setrightdots(int r)
-	{
-		rightDots = r;
-	}
-	int getleft()
-	{
-		return leftDots;
-	}
-	int getwright()
-	{
-		return rightDots;
-	}
-
-};
-bool FormsDominoChain(vector<dominoT>& dominos);
-void printdomia(vector<dominoT>& dominos);
-int main()
+struct domino
 {
-	vector<dominoT>v;
-	int n; cout << "Enter the number of dominos : "; cin >> n;
+	int leftdomino;
+	int rightdomino;
+};
+void test(vector<domino>v)
+{
+	vector<domino>vt(v);
+	for (int i = 0; i < vt.size(); i++)
+	{
+		bool t = true;
+		for (int j = 0; j < vt.size(); j++)
+		{
+			if ((vt[i].leftdomino == vt[j].rightdomino) && i != j)
+			{
+				t = false;
+				break;
+			}
+		}
+		if (t)
+		{
+			swap(vt[0], vt[i]);
+		}
+	}
+	for (int i = 0; i < vt.size()-1; i++)
+	{
+		for (int j = i + 1 ; j < vt.size(); j++)
+		{
+			if (vt[i].rightdomino == vt[j].leftdomino && vt[i].rightdomino == vt[j].rightdomino && i != j)
+			{
+				swap(vt[i + 1], vt[j]);
+				break;
+			}
+			else if (vt[i].rightdomino == vt[j].leftdomino && i != j)
+			{
+				swap(vt[i + 1], vt[j]);
+				
+			}
+		}
+	}
+	bool t = true;
+	for (int i = 0; i < vt.size() - 1; i++)
+	{
+		
+		if (vt[i].rightdomino != vt[i + 1].leftdomino) t = false;
+	}
+	if (t) {
+		cout << "True" << endl;
+		for (int i = 0; i < vt.size(); i++)
+		{
+			cout << vt[i].leftdomino << " | " << vt[i].rightdomino;
+			if (i != vt.size() - 1) cout << " - ";
+
+		}
+	}
+	else cout << "False" << endl;
+}
+void menu()
+{
+	vector<domino>v;
+	int n; cout << "Enter maximum number : "; cin >> n;
 	for (int i = 0; i < n; i++)
 	{
-		int x, y;
-		cout << "Enter left dots of the " << (i + 1) << " : "; cin >> x;
-		cout << "Enter right dots of the " << (i + 1) << " : "; cin >> y;
-		dominoT f;
-		f.setleftdots(x);
-		f.setrightdots(y);
-		bool t = true;
+		int ld; cout << "Enter left part of domino " << i + 1 << " : "; cin >> ld;
+		int rd; cout << "Enter right part of domino " << i + 1 << " : "; cin >> rd;
+		if (ld < 0 || ld>6 || rd > 6 || rd < 0)
+		{
+			cout << "Invalid number ( please enter a number between 0 , 6 )" << endl;
+			menu();
+			break;
+		}
+		domino d; d.leftdomino = ld; d.rightdomino = rd;
 		for (auto k : v)
 		{
-			if ((k.getleft() == f.getleft() && k.getwright() == f.getwright())
-				|| (k.getleft() == f.getwright() && k.getwright() == f.getleft())
-				|| x>6 || y >6 || x<0 || y<0)
-				t = false;
+			if ((k.leftdomino == d.leftdomino && k.rightdomino == d.rightdomino)
+				|| k.leftdomino == d.rightdomino && k.rightdomino == d.leftdomino) {
+				cout << "reapeted domino " << endl;
+				menu();
+				break;
+			}
 		}
-		if (t) v.push_back(f);
-		else {
-			cout << "Invalid !!!\n";
-				
-			break;
-		}
-
+		v.push_back(d);
 	}
-	if (FormsDominoChain(v)) {
-		cout << "True" << endl;
-		printdomia(v);
-	}
-	else cout << "False";
+	test(v);
+}
 
-	
-
-
+int main()
+{
+	menu();
 	return 0;
 }
-
-bool FormsDominoChain(vector<dominoT>& dominos)
-{
-	vector<dominoT>dominos2(dominos.size());
-	for (int i = 0; i < dominos2.size(); i++)
-	{
-		dominos2[i] = dominos[i];
-	}
-	bool t = false;
-	for (int i = 0; i < dominos2.size() - 1; i++)
-	{
-		t = false;
-		for (int j = 0; j < dominos2.size(); j++)
-		{
-			if ((dominos2[i].getwright() == dominos2[j].getleft() && i != j))
-			{
-				t = true;
-				dominos2[i].setrightdots(7);
-				dominos2[j].setleftdots(7);
-				break;
-			}
-			else t = false;
-		}
-	}
-	if (t) return true;
-	else return false;
-	
-}
-void printdomia(vector<dominoT>& dominos)
-{
-	int size = dominos.size();
-	vector<dominoT> dominos2(dominos);
-	vector<dominoT> dominos3;
-	vector<dominoT> ans;
-
-	for (int i = 0; i < size; i++)
-	{
-		bool t = true;
-		for (int j = 0; j < size; j++)
-		{
-			if ((dominos2[i].leftDots == dominos2[j].leftDots || dominos2[i].leftDots == dominos2[j].rightDots) && i != j)
-			{
-				t = false;
-			}
-		}
-		if (t == true)
-		{
-			swap(dominos2[0], dominos2[i]);
-			break;
-		}
-	}
-	for (int i = 0; i < size; i++)
-	{
-		bool t = true;
-		for (int j = 0; j < size; j++)
-		{
-			if ((dominos2[i].rightDots == dominos2[j].leftDots || dominos2[i].rightDots == dominos2[j].rightDots) && i != j)
-			{
-				t = false;
-			}
-		}
-		if (t == true)
-		{
-			swap(dominos2[size - 1], dominos2[i]);
-			break;
-		}
-	}
-	ans.push_back(dominos2[0]);
-	for (int i = 0; i < size; i++)
-	{
-		bool t = false;
-		dominos3.push_back(dominos2[i]);
-		for (int j = i; j < size; j++)
-		{
-			if ((dominos3[0].rightDots == dominos2[j].leftDots || dominos3[0].rightDots == dominos2[j].leftDots) && i != j)
-			{
-				t = true;
-				ans.push_back(dominos2[j]);
-				if(i+1 <= size) swap(dominos2[i+1], dominos2[j]);
-				break;
-			}
-			else if (dominos3[0].rightDots == dominos2[j].leftDots && i != j)
-			{
-				t = true;
-				ans.push_back(dominos2[j]);
-				if (i + 1 <= size) swap(dominos2[i+1], dominos2[j]);
-				break;
-			}
-		}
-		dominos3.pop_back();
-
-	}
-	/*ans.push_back(dominos2[size - 1]);*/
-
-	for (int i = 0; i < size; i++)
-	{
-		cout << ans[i].getleft() << " | " << ans[i].getwright();
-		if (i != size - 1) cout << " - ";
-	}
-}
-
